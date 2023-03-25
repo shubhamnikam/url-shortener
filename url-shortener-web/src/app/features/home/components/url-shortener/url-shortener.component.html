@@ -1,0 +1,100 @@
+<h2 class="pt-5 pb-2">Url Shortener</h2>
+<div>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="short-to-long-url-tab" data-bs-toggle="tab"
+        data-bs-target="#short-to-long-url-pane" type="button" role="tab" aria-controls="short-to-long-url-pane"
+        aria-selected="true">Create Short Url</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="long-to-short-url-tab" data-bs-toggle="tab" data-bs-target="#long-to-short-url-pane"
+        type="button" role="tab" aria-controls="long-to-short-url-pane" aria-selected="false">Get Long Url</button>
+    </li>
+  </ul>
+  <div class="tab-content p-3 border-top-0 border" id="myTabContent">
+    <!-- long to short url convert -->
+    <div class="tab-pane fade show active" id="short-to-long-url-pane" role="tabpanel"
+      aria-labelledby="short-to-long-url" tabindex="0">
+      <div class="row">
+        <div class="col-10  center-x">
+
+          <h5>Request:</h5>
+          <form [formGroup]="longToShortUrlForm" (ngSubmit)="submitRequestLongToShortUrl()">
+            <div class="input-group m-3">
+              <span class="input-group-text" id="longUrlLable">Enter Long Url</span>
+              <input class="form-control  text-center" formControlName="longUrlInput" type="url" name="longUrlInput"
+                id="longUrlInput" aria-label="longUrlInput" placeholder="https://example.com" />
+              <button class="btn btn-success mr-2" type="submit" [disabled]="!longToShortUrlForm.valid">Create Short Url</button>
+            </div>
+          </form>
+
+        <div *ngIf="isApiRequestProgress" class="row">
+          <div class="col-12 text-center">
+            Loading...
+          </div>
+        </div>
+
+        <div *ngIf="longToShortUrlModel" class="row">
+          <div class="col-12">
+            <h5>Output:</h5>
+              <ul>
+                <li>
+                  <span class="fw-bold"> Short url created:</span>
+                  <a [href]="shortUrlComplete" class="badge bg-primary text-white badge-sm rounded-pill" target="_blank">{{shortUrlComplete}}</a>
+                  <button class="btn btn-sm btn-dark ml-2"
+                  (click)="handleCopyToClipboard(appDomain+shortUrlComplete)">Copy</button>
+                </li>
+                <li>
+                  <span class="fw-bold"> SCreated On: </span> {{this.longToShortUrlModel.createdTimestamp | date:'full'}})
+                </li>
+              </ul>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- long to short url convert -->
+    <div class="tab-pane fade" id="long-to-short-url-pane" role="tabpanel" aria-labelledby="long-to-short-tab"
+      tabindex="0">
+      <div class="row">
+        <div class="col-10 center-x">
+
+          <h5>Request:</h5>
+          <form [formGroup]="shortToLongUrlForm" (ngSubmit)="submitRequestShortToLongUrl()">
+            <div class="input-group m-3">
+              <span class="input-group-text" id="shortUrlLable">Enter Short Url</span>
+              <span class="input-group-text" id="shortUrlLable">{{appDomain}}</span>
+              <input class="form-control px-4 text-center" formControlName="shortUrlInput" type="text"
+                name="shortUrlInput" id="shortUrlInput" aria-label="shortUrlInput" placeholder="abc1234" />
+              <button class="btn btn-success mr-2" type="submit" [disabled]="!shortToLongUrlForm.valid">Get Long Url</button>
+            </div>
+          </form>
+          <div *ngIf="isApiRequestProgress" class="row">
+            <div class="col-12 text-center">
+              Loading...
+            </div>
+          </div>
+
+          <div *ngIf="shortToLongUrlModel" class="row">
+            <div class="col-12">
+              <h5>Output:</h5>
+              <ul>
+                <li>
+                  <span class="fw-bold">Long url: </span>
+                  <a [href]="this.shortToLongUrlModel.longUrl" class="badge bg-primary text-white badge-sm rounded-pill"
+                    target="_blank">{{this.shortToLongUrlModel.longUrl}}</a>
+                  <button class="btn btn-sm btn-dark" 
+                  (click)="handleCopyToClipboard(appDomain+this.shortToLongUrlModel.longUrl)">Copy</button>
+                </li>
+                <li> <span class="fw-bold">Visitors Count: </span>{{this.shortToLongUrlModel.count}}</li>
+                <li> <span class="fw-bold">Created On: </span>{{this.shortToLongUrlModel.createdTimestamp |
+                  date:'medium'}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

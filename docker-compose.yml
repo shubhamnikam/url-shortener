@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  dotnetcore-api:
+    container_name: dotnetcore-api
+    restart: always
+    build: ./Url.Shortener.API/Url.Shortener.API
+    ports:
+      - "5000:80"
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Production"
+
+  ng-ui:
+    container_name: ng-ui
+    restart: always
+    build: ./url-shortener-web
+    ports:
+      - "8000:80"
+    volumes:
+       - ./frontend:/app
+       - /app/node_modules
+
+volumes:
+  frontend:
+    driver: local

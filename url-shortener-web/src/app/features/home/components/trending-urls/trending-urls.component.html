@@ -1,0 +1,26 @@
+<h2 class="pt-5 pb-2">Trending Url's</h2>
+
+<table class="table table-bordered table-hover">
+    <thead class="bg-secondary text-white">
+        <tr>
+            <th>Sr.No</th>
+            <!-- <th>Id</th> -->
+            <th>ShortUrl</th>
+            <th>LongUrl</th>
+            <th>Count</th>
+            <th>Created Timestamp</th>
+            <th>IsActive</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of trendingUrls; let i=index">
+            <td>{{i+1}}</td>
+            <!-- <td>{{item?.id}}</td> -->
+            <td>{{item?.shortUrl}}</td>
+            <td><a [href]="item?.longUrl" target="_blank">{{item?.longUrl}}</a></td>
+            <td>{{item?.count}}</td>
+            <td>{{item?.createdTimestamp}}</td>
+            <td>{{item?.isActive}}</td>
+        </tr>
+    </tbody>
+</table>
