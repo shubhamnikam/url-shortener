@@ -1,4 +1,4 @@
-# wish-generator
+# Url Shortner
 
 ### docker-compose
 ```bash
