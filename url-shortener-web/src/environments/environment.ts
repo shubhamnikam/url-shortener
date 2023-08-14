@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  API_ENDPOINT: "http://localhost:5000",
-  DOMAIN_SHORT_URL: "http://localhost:4200/"
+  API_ENDPOINT: 'http://localhost:2000',
+  DOMAIN_SHORT_URL: 'http://localhost:4200/',
 };
 
 /*

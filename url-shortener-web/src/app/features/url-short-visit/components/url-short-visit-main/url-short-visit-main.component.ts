@@ -39,7 +39,6 @@ export default class UrlShortVisitMainComponent implements OnInit, OnDestroy {
     const inputModel = {
       shortUrl: shortUrl
     }
-    console.table(inputModel);
 
     //api request
     this.shortToLongUrl$ = this.urlApiService.getLongUrl(inputModel)

@@ -356,3 +356,6 @@ MigrationBackup/
 FodyWeavers.xsd
 
 .vs/*
+.vscode/
+.angular/
+dist/

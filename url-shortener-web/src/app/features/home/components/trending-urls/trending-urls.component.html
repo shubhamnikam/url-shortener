@@ -1,4 +1,4 @@
-<h2 class="pt-5 pb-2">Trending Url's</h2>
+<h5 class="pt-5 pb-2 fw-bold">Trending Url's<img class="header-img-size" src="./../../../../../assets/undraw_dark_analytics_re_2kvy.svg" alt=""></h5>
 
 <table class="table table-bordered table-hover">
     <thead class="bg-secondary text-white">
@@ -8,7 +8,7 @@
             <th>ShortUrl</th>
             <th>LongUrl</th>
             <th>Count</th>
-            <th>Created Timestamp</th>
+            <th>CreatedOn</th>
             <th>IsActive</th>
         </tr>
     </thead>
@@ -16,7 +16,7 @@
         <tr *ngFor="let item of trendingUrls; let i=index">
             <td>{{i+1}}</td>
             <!-- <td>{{item?.id}}</td> -->
-            <td>{{item?.shortUrl}}</td>
+            <td><a class="badge rounded-pill bg-warning text-dark" [href]="appDomain+item?.shortUrl" target="_blank">{{appDomain+item?.shortUrl}}</a></td>
             <td><a [href]="item?.longUrl" target="_blank">{{item?.longUrl}}</a></td>
             <td>{{item?.count}}</td>
             <td>{{item?.createdTimestamp}}</td>

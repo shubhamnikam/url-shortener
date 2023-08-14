@@ -1,5 +1,5 @@
 export interface IUrlModel{
-    id: number,
+    id: string,
     shortUrl: string,
     longUrl: string,
     count: number,
