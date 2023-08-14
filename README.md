@@ -1,7 +1,19 @@
 # Url Shortner
 
-### docker-compose
+### tech-stack
 ```bash
+- frontend
+    - angular 15
+- backend
+    - dotnet core 6
+- db
+    - mongo db
+```
+
+### run locally using docker/docker-compose
+```bash
+- pull repo
+
 - install
     - docker
     - docker-compose
@@ -14,12 +26,3 @@ docker-compose up -d --build
 docker-compose down --rmi local
 ```
 
-### mssql server
-```bash
-- run mssql locally/in docker/in other server
-    - change the appsettings.json DefaultConnection string accordingly
-
-- apply initial migration
-    - dotnet ef migration add "Initial"
-    - dotnet ef database update
-```
