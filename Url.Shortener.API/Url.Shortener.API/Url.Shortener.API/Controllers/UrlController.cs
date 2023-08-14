@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Url.Shortener.API.Entities;
 using Url.Shortener.API.Models;
-using Url.Shortener.API.Repositories;
+using Url.Shortener.API.Service;
 using Url.Shortener.API.Utilities;
 
 namespace Url.Shortener.API.Controllers
@@ -11,16 +12,16 @@ namespace Url.Shortener.API.Controllers
     public class UrlController : ControllerBase
     {
         private readonly ILogger<UrlController> logger;
-        private readonly IUrlRepository urlRepository;
+        private readonly IUrlService urlService;
 
-        public UrlController(ILogger<UrlController> logger, IUrlRepository urlRepository)
+        public UrlController(ILogger<UrlController> logger, IUrlService urlService)
         {
             this.logger = logger;
-            this.urlRepository = urlRepository;
+            this.urlService = urlService;
         }
 
         [HttpPost("CreateShortUrl")]
-        public async Task<ActionResult<UrlModel>> CreateShortUrl([FromBody] UrlLongToShortInputModel inputModel)
+        public async Task<ActionResult<UrlEntity>> CreateShortUrl([FromBody] UrlLongToShortInputModel inputModel)
         {
             try
             {
@@ -31,7 +32,7 @@ namespace Url.Shortener.API.Controllers
                 // encode url
                 //longUrl = System.Web.HttpUtility.UrlEncode(longUrl);
 
-                var result = await urlRepository.CreateShortUrl(inputModel.LongUrl);
+                var result = await urlService.CreateShortUrl(inputModel.LongUrl);
 
                 // decode url
                 if (result is not null)
@@ -48,11 +49,11 @@ namespace Url.Shortener.API.Controllers
         }
 
         [HttpPost("GetLongUrl")]
-        public async Task<ActionResult<UrlModel>> GetLongUrl([FromBody] UrlShortToLongInputModel model)
+        public async Task<ActionResult<UrlEntity>> GetLongUrl([FromBody] UrlShortToLongInputModel model)
         {
             try
             {
-                var result = await urlRepository.GetLongUrlByShortUrl(model.ShortUrl);
+                var result = await urlService.GetLongUrlByShortUrl(model.ShortUrl);
                 if (result is null)
                 {
                     throw new Exception($"No url found for: {model.ShortUrl}");
@@ -70,13 +71,13 @@ namespace Url.Shortener.API.Controllers
         }
 
         [HttpGet("GetTrendingUrls/{noOfResult}")]
-        public async Task<ActionResult<UrlModel>> GetTrendingUrls([FromRoute] int noOfResult)
+        public async Task<ActionResult<UrlEntity>> GetTrendingUrls([FromRoute] int noOfResult)
         {
             try
             {
                 if (noOfResult > AppConstants.MAX_NO_OF_RESULT) { noOfResult = AppConstants.MAX_NO_OF_RESULT; }
 
-                var result = await urlRepository.GetTrendingUrls(noOfResult);
+                var result = await urlService.GetTrendingUrls(noOfResult);
 
                 // decode url
                 if (result is not null)
