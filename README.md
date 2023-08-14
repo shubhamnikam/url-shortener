@@ -1,5 +1,12 @@
 # Url Shortner
 
+#### Trending Urls:
+![image](https://github.com/shubhamnikam/url-shortener/assets/24590977/388225d8-0a96-47f7-a023-893c116422a2)
+#### Create Short Urls:
+![image](https://github.com/shubhamnikam/url-shortener/assets/24590977/9003f2fe-420f-44e8-a679-7ff9facec4a9)
+#### Get Long Urls from short url code:
+![image](https://github.com/shubhamnikam/url-shortener/assets/24590977/405edad6-fc5f-406b-8c8b-0063c83a333d)
+
 ### tech-stack
 ```bash
 - frontend
@@ -47,4 +54,3 @@ docker-compose up -d --build
 - stop & remove all containers 
 docker-compose down --rmi local
 ```
-
