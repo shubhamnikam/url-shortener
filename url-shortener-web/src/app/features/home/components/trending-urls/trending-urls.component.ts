@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IUrlModel } from 'src/app/core/interfaces/IUrlModel';
+import { UrlEntity } from 'src/app/core/api/models';
+import { UrlService } from 'src/app/core/api/services';
 import { ToastrHelperService } from 'src/app/core/services/toastr-helper.service';
-import { UrlApiService } from 'src/app/core/services/url-api.service';
 import { AppConstants } from 'src/app/core/utilities/AppConstants';
 
 @Component({
@@ -11,11 +11,11 @@ import { AppConstants } from 'src/app/core/utilities/AppConstants';
 })
 export class TrendingUrlsComponent implements OnInit, OnDestroy {
   $getTrendingUrls!: any;
-  trendingUrls!: IUrlModel[];
+  trendingUrls!: UrlEntity[];
   appDomain!: string;
 
   constructor(
-    private urlApiService: UrlApiService,
+    private urlService: UrlService,
     private toastrHelperService: ToastrHelperService
   ) {}
 
@@ -25,10 +25,10 @@ export class TrendingUrlsComponent implements OnInit, OnDestroy {
   }
 
   getTrendingUrls(): void {
-    this.$getTrendingUrls = this.urlApiService
-      .getTrendingUrls(AppConstants.getTrendingUrlsNoOfResult())
+    this.$getTrendingUrls = this.urlService
+    .apiUrlGetTrendingUrlsNoOfResultGet$Json({noOfResult: 5})
       .subscribe({
-        next: (result: IUrlModel[]) => {
+        next: (result: UrlEntity[]) => {
           this.trendingUrls = result;
           this.toastrHelperService.notifySuccess(
             'Success',

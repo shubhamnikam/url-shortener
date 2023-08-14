@@ -1,0 +1,207 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Url.Shortener.API",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/Url/CreateShortUrl": {
+            "post": {
+                "tags": [
+                    "Url"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UrlLongToShortInputModel"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UrlLongToShortInputModel"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UrlLongToShortInputModel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UrlEntity"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UrlEntity"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UrlEntity"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/Url/GetLongUrl": {
+            "post": {
+                "tags": [
+                    "Url"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UrlShortToLongInputModel"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UrlShortToLongInputModel"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UrlShortToLongInputModel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UrlEntity"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UrlEntity"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UrlEntity"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/Url/GetTrendingUrls/{noOfResult}": {
+            "get": {
+                "tags": [
+                    "Url"
+                ],
+                "parameters": [
+                    {
+                        "name": "noOfResult",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UrlEntity"
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UrlEntity"
+                                    }
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UrlEntity"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "UrlEntity": {
+                "type": "object",
+                "properties": {
+                    "isActive": {
+                        "type": "boolean"
+                    },
+                    "createdTimestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "id": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "shortUrl": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "longUrl": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "count": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UrlLongToShortInputModel": {
+                "type": "object",
+                "properties": {
+                    "longUrl": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UrlShortToLongInputModel": {
+                "type": "object",
+                "properties": {
+                    "shortUrl": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            }
+        }
+    }
+}

@@ -13,6 +13,8 @@ import { UrlShortenerComponent } from './features/home/components/url-shortener/
 import { TrendingUrlsComponent } from './features/home/components/trending-urls/trending-urls.component';
 import { HomeMainComponent } from './features/home/components/home-main/home-main.component';
 import UrlShortVisitMainComponent from './features/url-short-visit/components/url-short-visit-main/url-short-visit-main.component';
+import { ApiModule } from './core/api/api.module';
+import { AppConstants } from './core/utilities/AppConstants';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,7 @@ import UrlShortVisitMainComponent from './features/url-short-visit/components/ur
     UrlShortenerComponent,
     TrendingUrlsComponent,
     HomeMainComponent,
-    UrlShortVisitMainComponent
+    UrlShortVisitMainComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,9 +35,10 @@ import UrlShortVisitMainComponent from './features/url-short-visit/components/ur
       timeOut: 10000,
       positionClass: 'toast-bottom-right',
       preventDuplicates: true,
-    })
+    }),
+    ApiModule.forRoot({ rootUrl: AppConstants.getAPIEndpoint() }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

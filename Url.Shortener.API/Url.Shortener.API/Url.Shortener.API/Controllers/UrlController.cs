@@ -71,7 +71,7 @@ namespace Url.Shortener.API.Controllers
         }
 
         [HttpGet("GetTrendingUrls/{noOfResult}")]
-        public async Task<ActionResult<UrlEntity>> GetTrendingUrls([FromRoute] int noOfResult)
+        public async Task<ActionResult<UrlEntity[]>> GetTrendingUrls([FromRoute] int noOfResult)
         {
             try
             {

@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { IUrlModel } from 'src/app/core/interfaces/IUrlModel';
+import { UrlEntity, UrlLongToShortInputModel, UrlShortToLongInputModel } from 'src/app/core/api/models';
+import { UrlService } from 'src/app/core/api/services';
 import { ToastrHelperService } from 'src/app/core/services/toastr-helper.service';
-import { UrlApiService } from 'src/app/core/services/url-api.service';
 import { AppConstants } from 'src/app/core/utilities/AppConstants';
 
 @Component({
@@ -21,15 +21,15 @@ export class UrlShortenerComponent implements OnInit, OnDestroy {
 
   isApiRequestProgress: boolean = false;
 
-  longToShortUrlModel!: IUrlModel | null;
-  shortToLongUrlModel!: IUrlModel | null;
+  longToShortUrlModel!: UrlEntity | null;
+  shortToLongUrlModel!: UrlEntity | null;
 
   appDomain!: string;
   shortUrlMaxLength: number = 0;
 
   constructor(
     private formBuilder: FormBuilder,
-    private urlApiService: UrlApiService,
+    private urlService: UrlService,
     private toastrHelperService: ToastrHelperService
   ) {}
 
@@ -66,14 +66,14 @@ export class UrlShortenerComponent implements OnInit, OnDestroy {
     }
 
     //create input model
-    const inputModel = {
+    const inputModel: UrlLongToShortInputModel = {
       longUrl: longUrl,
     };
 
-    this.longToShortUrl$ = this.urlApiService
-      .createShortUrl(inputModel)
+    this.longToShortUrl$ = this.urlService
+      .apiUrlCreateShortUrlPost$Json({ body: inputModel })
       .subscribe({
-        next: (result: IUrlModel) => {
+        next: (result: UrlEntity) => {
           this.longToShortUrlModel = result;
           this.shortUrlComplete = `${this.appDomain}${this.longToShortUrlModel?.shortUrl}`;
           this.toastrHelperService.notifySuccess(
@@ -107,36 +107,41 @@ export class UrlShortenerComponent implements OnInit, OnDestroy {
     }
 
     //create input model
-    const inputModel = {
+    const inputModel: UrlShortToLongInputModel = {
       shortUrl: shortUrl,
     };
 
     //api request
-    this.shortToLongUrl$ = this.urlApiService.getLongUrl(inputModel).subscribe({
-      next: (result: IUrlModel) => {
-        this.shortToLongUrlModel = result;
-        this.toastrHelperService.notifySuccess(
-          'Success',
-          'Get Long url success'
-        );
-      },
-      error: (err: Error) => {
-        this.isApiRequestProgress = false;
-        this.toastrHelperService.notifyError(
-          'Get Long url failed',
-          err.message
-        );
-        console.error(err);
-      },
-      complete: () => {
-        // hide loading
-        this.isApiRequestProgress = false;
-      },
-    });
+    this.shortToLongUrl$ = this.urlService
+      .apiUrlGetLongUrlPost$Json({ body: inputModel })
+      .subscribe({
+        next: (result: UrlEntity) => {
+          this.shortToLongUrlModel = result;
+          this.toastrHelperService.notifySuccess(
+            'Success',
+            'Get Long url success'
+          );
+        },
+        error: (err: Error) => {
+          this.isApiRequestProgress = false;
+          this.toastrHelperService.notifyError(
+            'Get Long url failed',
+            err.message
+          );
+          console.error(err);
+        },
+        complete: () => {
+          // hide loading
+          this.isApiRequestProgress = false;
+        },
+      });
   }
 
-  handleCopyToClipboard(textToCopy: string): void {
-    navigator.clipboard.writeText(textToCopy);
+  handleCopyToClipboard(textToCopy: string | null | undefined): void {
+    if (textToCopy){
+      navigator.clipboard.writeText(textToCopy);
+    } 
+    navigator.clipboard.writeText("");
   }
 
   ngOnDestroy(): void {

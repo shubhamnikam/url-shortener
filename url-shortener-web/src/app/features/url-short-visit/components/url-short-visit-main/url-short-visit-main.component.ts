@@ -1,9 +1,9 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IUrlModel } from 'src/app/core/interfaces/IUrlModel';
+import { UrlEntity, UrlLongToShortInputModel, UrlShortToLongInputModel } from 'src/app/core/api/models';
+import { UrlService } from 'src/app/core/api/services';
 import { ToastrHelperService } from 'src/app/core/services/toastr-helper.service';
-import { UrlApiService } from 'src/app/core/services/url-api.service';
 
 @Component({
   selector: 'app-url-short-visit-main',
@@ -14,7 +14,7 @@ export default class UrlShortVisitMainComponent implements OnInit, OnDestroy {
   shortToLongUrl$!: any;
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private urlApiService: UrlApiService,
+    private urlService: UrlService,
     private toastrHelperService: ToastrHelperService,
     @Inject(DOCUMENT) private document: Document) { }
 
@@ -36,26 +36,33 @@ export default class UrlShortVisitMainComponent implements OnInit, OnDestroy {
 
   submitRequestShortToLongUrl(shortUrl: string | null): void {
     //create input model
-    const inputModel = {
-      shortUrl: shortUrl
-    }
+    let inputModel: UrlShortToLongInputModel = {
+      shortUrl: shortUrl,
+    };
 
     //api request
-    this.shortToLongUrl$ = this.urlApiService.getLongUrl(inputModel)
+    this.shortToLongUrl$ = this.urlService
+      .apiUrlGetLongUrlPost$Json({ body: inputModel })
       .subscribe({
-        next: (result: IUrlModel) => {
-          this.toastrHelperService.notifySuccess("Success", "Redirect to Long url success");
+        next: (result: UrlEntity) => {
+          this.toastrHelperService.notifySuccess(
+            'Success',
+            'Redirect to Long url success'
+          );
           //redirect to new long url
           // this.router.navigateByUrl(result.longUrl);
-          this.document.location.href  = result.longUrl;
+          this.document.location.href = result.longUrl ?? '';
         },
         error: (err: Error) => {
-          this.toastrHelperService.notifyError("Redirect to Long url failed", err.message);
+          this.toastrHelperService.notifyError(
+            'Redirect to Long url failed',
+            err.message
+          );
           console.error(err);
         },
         complete: () => {
           // hide loading
-        }
+        },
       });
   }
 
