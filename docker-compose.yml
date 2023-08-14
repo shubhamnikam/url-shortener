@@ -1,24 +1,40 @@
 version: "3.8"
 services:
-  dotnetcore-api:
-    container_name: dotnetcore-api
+  mongo-master-url-shortener:
+    container_name: mongo-master-url-shortener
+    image: mongo
+    restart: always
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - 'mongo_data:/data/db'
+
+  dotnetcore-api-url-shortener:
+    container_name: dotnetcore-api-url-shortener
     restart: always
     build: ./Url.Shortener.API/Url.Shortener.API
     ports:
-      - "5000:80"
+      - "3000:80"
     environment:
       - "ASPNETCORE_ENVIRONMENT=Production"
+    depends_on:
+      - mongo-master-url-shortener
 
-  ng-ui:
-    container_name: ng-ui
+  ng-ui-url-shortener:
+    container_name: ng-ui-url-shortener
     restart: always
     build: ./url-shortener-web
     ports:
-      - "8000:80"
+      - "3001:80"
     volumes:
        - ./frontend:/app
        - /app/node_modules
 
 volumes:
+  mongo_data:
+    driver: local
   frontend:
     driver: local
